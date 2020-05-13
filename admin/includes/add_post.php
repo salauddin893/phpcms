@@ -1,6 +1,5 @@
 <?php
     if(isset($_POST['creat_post'])) {
-
         $post_title = $_POST['post_title'];
         $post_cat = $_POST['post_category'];
         $post_author = $_POST['post_user'];
@@ -20,6 +19,10 @@
         $query .= "VALUES('{$post_cat}', '{$post_title}', '{$post_author}', now(), '{$image}', '{$post_content}', '{$post_tags}', '{$post_status}') ";
 
         $careat_post = mysqli_query($connection, $query);
+
+        $the_post_id = mysqli_insert_id($connection);
+
+        echo "<p class='bg-success'>Post Creat: <a href='../post.php?p_id={$the_post_id}'>View All Posts</a> or <a href='posts.php'>View all post</></p>";
 
     }
 ?>

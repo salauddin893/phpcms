@@ -66,17 +66,23 @@
                     $comment_email = $_POST['comment_email'];
                     $comment_content = $_POST['comment_content'];
 
-                    $query = "INSERT INTO comments(comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) ";
-                    $query .= "VALUES($the_post_id, '{$comment_author}', '{$comment_email}', '{$comment_content}', 'unapprove', now() ) ";
+                    if(!empty($comment_author) && !empty($comment_email) && !empty($comment_content)) {
 
-                    $creat_comments = mysqli_query($connection, $query);
+                        $query = "INSERT INTO comments(comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) ";
+                        $query .= "VALUES($the_post_id, '{$comment_author}', '{$comment_email}', '{$comment_content}', 'unapprove', now() ) ";
+
+                        $creat_comments = mysqli_query($connection, $query);
 
 
 
-                    $query = "UPDATE posts SET post_comment_count = post_comment_count + 1 ";
-                    $query .= "WHERE post_id = $the_post_id ";
+                        $query = "UPDATE posts SET post_comment_count = post_comment_count + 1 ";
+                        $query .= "WHERE post_id = $the_post_id ";
 
-                    $update_comment_count = mysqli_query($connection, $query);
+                        $update_comment_count = mysqli_query($connection, $query);
+
+                    }else{ ?>
+                        <script>alert('please field not empty')</script>
+                    <?php }
 
                 }
                 

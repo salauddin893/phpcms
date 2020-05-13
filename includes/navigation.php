@@ -33,6 +33,9 @@
                         <li>
                             <a href="admin">admin</a>
                         </li>
+                        <li>
+                            <a href="registration.php">registration</a>
+                        </li>
 
 <?php
     if(isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin') {

@@ -1,6 +1,7 @@
 <?php
 
 if(isset($_GET['u_id'])) {
+    
     $the_user_id = $_GET['u_id'];
 
         
@@ -41,6 +42,15 @@ if(isset($_GET['u_id'])) {
                 $user_image = $row['user_image'];
             }
         }
+
+        $render_query = "SELECT user_randsalt FROM users ";
+        $select_render_user = mysqli_query($connection, $render_query);
+
+        $row = mysqli_fetch_array($select_render_user);
+
+        $salt = $row['user_randsalt'];
+
+        $user_password = crypt($user_password, $salt);
     
         $query = "UPDATE users SET ";
         $query .= "username = '{$username}', ";
