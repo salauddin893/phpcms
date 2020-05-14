@@ -18,15 +18,17 @@
         $email = mysqli_real_escape_string($connection, $email);
         $password = mysqli_real_escape_string($connection, $password);
 
-        $rendsalt_query = "SELECT user_randsalt FROM users ";
-        $select_rendsalt_query = mysqli_query($connection, $rendsalt_query);
+        $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 10));
+
+    //     $rendsalt_query = "SELECT user_randsalt FROM users ";
+    //     $select_rendsalt_query = mysqli_query($connection, $rendsalt_query);
 
 
-       $row = mysqli_fetch_array($select_rendsalt_query);
+    //    $row = mysqli_fetch_array($select_rendsalt_query);
 
-        $salt = $row['user_randsalt'];
+    //     $salt = $row['user_randsalt'];
 
-        $password = crypt($password, $salt);
+    //     $password = crypt($password, $salt);
 
         if(!empty($username) && !empty($email) && !empty($password)) {
 

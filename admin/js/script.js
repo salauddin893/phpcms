@@ -1,4 +1,8 @@
-$(document).ready(function() {
+(function ($) {
+
+	"use strict";
+
+
     $('#selectAllBoxes').on('click', function(e) {
         if(this.checked) {
             $('.checkboxs').each(function() {
@@ -10,4 +14,7 @@ $(document).ready(function() {
             });
         }
     });
-});
+
+})(jQuery);	
+
+

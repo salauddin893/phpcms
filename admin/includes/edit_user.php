@@ -8,6 +8,7 @@ if(isset($_GET['u_id'])) {
     $query = "SELECT * FROM users WHERE user_id = '$the_user_id'" ;
     $all_users_by_id = mysqli_query($connection, $query);
 
+
     while($row = mysqli_fetch_assoc($all_users_by_id)) {
         $user_id = $row['user_id'];
         $username = $row['username'];
@@ -17,7 +18,7 @@ if(isset($_GET['u_id'])) {
         $user_email = $row['user_email'];
         $user_image = $row['user_image'];
         $user_role = $row['user_role'];
-        
+        $user_rend = $row['user_randsalt'];
     }
 
     if(isset($_POST['update_user'])) {
@@ -43,14 +44,29 @@ if(isset($_GET['u_id'])) {
             }
         }
 
-        $render_query = "SELECT user_randsalt FROM users ";
-        $select_render_user = mysqli_query($connection, $render_query);
+        if(!empty($user_password)) {
+            $pass_query = "SELECT user_password FROM users WHERE user_id = $the_user_id ";
+            $select_pass = mysqli_query($connection, $pass_query);
 
-        $row = mysqli_fetch_array($select_render_user);
+            $row = mysqli_fetch_array($select_pass);
 
-        $salt = $row['user_randsalt'];
+            $db_user_password = $row['user_password'];
 
-        $user_password = crypt($user_password, $salt);
+            if($db_user_password !== $user_password) {
+
+                $user_password = password_hash($user_password, PASSWORD_BCRYPT, array('cast' => 10));
+            }
+
+        }
+
+        // $render_query = "SELECT user_randsalt FROM users ";
+        // $select_render_user = mysqli_query($connection, $render_query);
+
+        // $row = mysqli_fetch_array($select_render_user);
+
+        // $salt = $row['user_randsalt'];
+
+        // $user_password = crypt($user_password, $salt);
     
         $query = "UPDATE users SET ";
         $query .= "username = '{$username}', ";
@@ -81,31 +97,10 @@ if(isset($_GET['u_id'])) {
          <input value="<?php echo $user_firstname; ?>"  type="text" class="form-control" name="user_firstname">
      </div>
 
-       <!-- <div class="form-group">
-        <label for="title">Post category</label>
-         <input type="text" class="form-control" name="post_category">
-     </div> -->
-
-       <!-- <div class="form-group">
-           <label for="users">Users</label>
-           <select name="post_user" id=""> </select>
-     </div> -->
-
      <div class="form-group">
         <label for="title">User lastname</label>
          <input value="<?php echo $user_lastname; ?>" type="text" class="form-control" name="user_lastname">
      </div>
-
-
-
-   <!--   <div class="form-group">
-        <label for="title">Post Author</label>
-         <input value="<?php// echo $post_user; ?>" type="text" class="form-control" name="post_user">
-     </div> -->
-     
-      <!-- <div class="form-group">
-           <select name="post_status" id=""></select>
-       </div> -->
 
        <div class="form-group">
         <label for="title">Username</label>
@@ -121,7 +116,7 @@ if(isset($_GET['u_id'])) {
 
      <div class="form-group">
         <label for="post_content">User password</label>
-        <input value="<?php echo $user_password; ?>" type="text" class="form-control" name="user_password">
+        <input type="text" class="form-control" name="user_password">
      </div>
    
      

@@ -49,3 +49,26 @@ function delete_category() {
         header('location: categories.php');
     }
 }
+
+function users_online() {
+    global $connection;
+
+    $session = session_id();
+    $time = time();
+    $time_out_in_second = 60;
+    
+    $time_out = $time - $time_out_in_second;
+
+    $query = "SELECT * FROM users_online WHERE session = '{$session}' ";
+    $session_qyery = mysqli_query($connection, $query);
+    $session_count = mysqli_num_rows($session_qyery);
+
+    if($session_count == null) {
+        mysqli_query($connection, "INSERT INTO users_online (session, time) VAlUES ('{$session}', '{$time}') ");
+    }else{
+        mysqli_query($connection, "UPDATE users_online SET time = '{$time}' WHERE session = '{$session}' ");
+    }
+
+    $users_online_query = mysqli_query($connection, "SELECT * FROM users_online WHERE time > '$time_out' ");
+    return $count_online_user = mysqli_num_rows($users_online_query);
+}

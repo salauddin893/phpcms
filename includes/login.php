@@ -26,11 +26,9 @@ if(isset($_POST['login'])) {
         $db_user_role = $row['user_role'];
     }
 
-    $password = crypt($password, $db_user_password);
+    // $password = crypt($password, $db_user_password);
 
-    if($db_username !== $username && $db_user_password !== $password) {
-        header('location: ../index.php');
-    }else if($db_username == $username && $db_user_password == $password) {
+    if(password_verify($password, $db_user_password)) {
 
         $_SESSION['username'] = $db_username;
         $_SESSION['firstname'] = $db_user_firstnaem;

@@ -5,6 +5,9 @@
         $user_lastname = $_POST['user_lastname'];
         $username = $_POST['username'];
         $user_password = $_POST['user_password'];
+
+        $user_password = password_hash($user_password, PASSWORD_BCRYPT, array('cast' => 10));
+
         $user_email = $_POST['user_email'];
 
         $image = $_FILES['user_image']['name'];
